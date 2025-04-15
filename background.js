@@ -16,7 +16,15 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
         chrome.storage.sync.get(['extensionEnabled'], function(data) {
             // Extension aktifse ve URL instagram.com içeriyorsa yönlendir
             if (data.extensionEnabled && tab.url && tab.url.includes("instagram.com")) {
-                chrome.tabs.update(tabId, { url: "https://oidb.metu.edu.tr/akademik-takvim" });
+                chrome.tabs.update(tabId, { url: "https://oidb.metu.edu.tr/akademik-takvim" }, function() {
+                    // Yönlendirme tamamlandıktan sonra popup.html'i aç
+                    chrome.windows.create({
+                        url: 'popup.html',
+                        type: 'popup',
+                        width: 400,
+                        height: 400
+                    });
+                });
             }
         });
     }

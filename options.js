@@ -10,8 +10,9 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('extensionEnabled').addEventListener('change', function() {
         chrome.storage.sync.set({
             extensionEnabled: this.checked
+        }, function() {
+            updateStatusText();
         });
-        updateStatusText();
     });
 });
 
@@ -19,6 +20,6 @@ document.addEventListener('DOMContentLoaded', function() {
 function updateStatusText() {
     const statusText = document.getElementById('statusText');
     const isEnabled = document.getElementById('extensionEnabled').checked;
-    statusText.textContent = isEnabled ? 'Extension aktif' : 'Extension devre dışı';
+    statusText.textContent = isEnabled ? 'Aktif' : 'Devre dışı';
     statusText.style.color = isEnabled ? '#2196F3' : '#666';
 } 
