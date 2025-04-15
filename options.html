@@ -5,7 +5,7 @@
     <title>NOGRAM Ayarlar</title>
     <style>
         body {
-            width: 200px;
+            width: 300px;
             margin: 0;
             padding: 10px;
             font-family: Arial, sans-serif;
@@ -22,15 +22,16 @@
         }
         .input-group {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: space-between;
-            gap: 10px;
+            gap: 5px;
+            margin: 10px 0;
         }
         .switch {
             position: relative;
             display: inline-block;
-            width: 40px;
-            height: 24px;
+            width: 50px;
+            height: 28px;
         }
         .switch input {
             opacity: 0;
@@ -44,15 +45,15 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: #ccc;
+            background-color: #ff4444;
             transition: .4s;
-            border-radius: 24px;
+            border-radius: 28px;
         }
         .slider:before {
             position: absolute;
             content: "";
-            height: 16px;
-            width: 16px;
+            height: 20px;
+            width: 20px;
             left: 4px;
             bottom: 4px;
             background-color: white;
@@ -60,16 +61,17 @@
             border-radius: 50%;
         }
         input:checked + .slider {
-            background-color: #2196F3;
+            background-color: #4CAF50;
         }
         input:checked + .slider:before {
-            transform: translateX(16px);
+            transform: translateX(22px);
         }
         .status {
             font-size: 12px;
             color: #666;
             text-align: center;
             margin-top: 5px;
+            font-weight: 500;
         }
         h1 {
             margin: 0;
@@ -77,19 +79,64 @@
             color: #333;
             text-align: center;
         }
+        .sites-container {
+            margin-top: 10px;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+        }
+        .site-input {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 5px;
+        }
+        .site-input input {
+            flex: 1;
+            padding: 4px 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        .site-input button {
+            background: none;
+            border: none;
+            color: #ff4444;
+            cursor: pointer;
+            padding: 0 5px;
+            font-size: 16px;
+        }
+        .add-site {
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            width: 100%;
+            margin-top: 5px;
+        }
+        .add-site:hover {
+            background-color: #1976D2;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>NOGRAM</h1>
         <div class="input-group">
-            <label style="font-size: 14px;">Durum:</label>
             <label class="switch">
                 <input type="checkbox" id="extensionEnabled">
                 <span class="slider"></span>
             </label>
+            <div class="status" id="statusText">Work Mode</div>
         </div>
-        <div class="status" id="statusText">Extension aktif</div>
+        
+        <div class="sites-container">
+            <div id="sitesList">
+                <!-- Site girdileri buraya eklenecek -->
+            </div>
+            <button class="add-site" id="addSite">+ Yeni Site Ekle</button>
+        </div>
     </div>
     <script src="options.js"></script>
 </body>
