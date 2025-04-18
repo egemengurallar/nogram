@@ -22,24 +22,32 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
             // Extension aktifse ve URL engellenecek sitelerden birini içeriyorsa yönlendir
             if (data.extensionEnabled && tab.url) {
                 const sites = data.sites || ['instagram.com'];
-                for (const site of sites) {
-                    if (site) {
-                        // Create a URL object to properly parse the domain
-                        const url = new URL(tab.url);
-                        // Check if the hostname is exactly instagram.com
-                        if (url.hostname === site) {
-                            chrome.tabs.update(tabId, { url: "https://oidb.metu.edu.tr/akademik-takvim" }, function() {
-                                // Yönlendirme tamamlandıktan sonra popup.html'i aç
-                                chrome.windows.create({
-                                    url: 'popup.html',
-                                    type: 'popup',
-                                    width: 400,
-                                    height: 400
+                
+                try {
+                    // Create a URL object to properly parse the domain
+                    const url = new URL(tab.url);
+                    
+                    for (const site of sites) {
+                        if (site) {
+                            // Check if the hostname is exactly the site (e.g., "instagram.com")
+                            // Or if it's "www." + site (e.g., "www.instagram.com")
+                            if (url.hostname === site || url.hostname === `www.${site}`) {
+                                chrome.tabs.update(tabId, { url: "https://oidb.metu.edu.tr/akademik-takvim" }, function() {
+                                    // Yönlendirme tamamlandıktan sonra popup.html'i aç
+                                    chrome.windows.create({
+                                        url: 'popup.html',
+                                        type: 'popup',
+                                        width: 400,
+                                        height: 400
+                                    });
                                 });
-                            });
-                            break;
+                                break;
+                            }
                         }
                     }
+                } catch (error) {
+                    // URL parsing hatası olduğunda sessizce devam et
+                    console.log("URL parsing error:", error);
                 }
             }
         });
