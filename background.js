@@ -23,17 +23,22 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
             if (data.extensionEnabled && tab.url) {
                 const sites = data.sites || ['instagram.com'];
                 for (const site of sites) {
-                    if (site && tab.url.includes(site)) {
-                        chrome.tabs.update(tabId, { url: "https://oidb.metu.edu.tr/akademik-takvim" }, function() {
-                            // Yönlendirme tamamlandıktan sonra popup.html'i aç
-                            chrome.windows.create({
-                                url: 'popup.html',
-                                type: 'popup',
-                                width: 400,
-                                height: 400
+                    if (site) {
+                        // Create a URL object to properly parse the domain
+                        const url = new URL(tab.url);
+                        // Check if the hostname is exactly instagram.com
+                        if (url.hostname === site) {
+                            chrome.tabs.update(tabId, { url: "https://oidb.metu.edu.tr/akademik-takvim" }, function() {
+                                // Yönlendirme tamamlandıktan sonra popup.html'i aç
+                                chrome.windows.create({
+                                    url: 'popup.html',
+                                    type: 'popup',
+                                    width: 400,
+                                    height: 400
+                                });
                             });
-                        });
-                        break;
+                            break;
+                        }
                     }
                 }
             }
